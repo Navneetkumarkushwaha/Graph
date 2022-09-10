@@ -1,0 +1,31 @@
+graph = [[],[2],[1,4],[5],[2],[3,10,6],[5,7],[6,8],[7,9,11],[10,8],[5,9],[8]]
+
+visited = [0]*(12)
+def checkforcycle(node,graph,visited):
+    queue = []
+    visited[node] = 1
+    queue.append((node,-1))
+
+    while queue:
+        node,par = queue.pop()
+        for child in graph[node]:
+            if not visited[child]:
+                visited[child] = 1
+                queue.append((child,node))
+            elif par != child:
+                return True
+
+    
+def iscycle(graph):
+    Flag = 'n'
+    for i in range(1,12):
+        if not visited[i]:
+            if checkforcycle(i,graph,visited):
+                print('Yes')
+                Flag = 'Cycle'
+        if Flag == 'Cycle':
+            break
+iscycle(graph)
+        
+    
+O/P = Yes
