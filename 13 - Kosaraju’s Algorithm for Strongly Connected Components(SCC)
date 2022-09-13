@@ -1,0 +1,57 @@
+def dfs(node,st,vis,adj):
+    vis[node] = 1
+    for child in adj[node]:
+        if not vis[child]:
+            dfs(child,st,vis,adj)
+
+    st.append(node)
+
+def revdfs(node,vis,transpose):             # calling reverse dfs
+    print(node,end=' ')
+    vis[node] = 1
+    for child in transpose[node]:
+        if not vis[child]:
+            revdfs(child,vis,transpose)
+            
+n = int(input())                             # taking input from user
+
+graph = [[]for _ in range(n+1)]
+for i in range(n+1):
+    temp = list(map(int,input().split()))
+    graph[i] = graph[i] + temp
+st = []
+vis = [0]*(n+1)
+
+for i in range(1,n+1):
+    if not vis[i]:
+        dfs(i,st,vis,graph)
+print(st)                                   # topo sort
+
+transpose = [[]for _ in range(n+1)]
+print(transpose)
+for i in range(1,n+1):                      # transpose graph
+    vis[i] = 0
+    if not graph[i]:
+        continue
+    for child in graph[i]:
+        transpose[child].append(i)
+        
+print(transpose)
+while st:
+    node = st.pop()
+    if not vis[node]:
+        print('ssc:- ',end='')
+        revdfs(node,vis,transpose)
+        
+5
+
+2
+3 4
+1
+5
+
+[3, 5, 4, 2, 1]
+[[], [], [], [], [], []]
+[[], [3], [1], [2], [2], [4]]
+ssc:- 1 3 2 ssc:- 4 ssc:- 5 
+    
