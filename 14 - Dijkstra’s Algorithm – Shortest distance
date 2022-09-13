@@ -1,0 +1,63 @@
+from collections import defaultdict
+import heapq
+n = int(input())
+source = 1
+
+graph = defaultdict(list)
+
+for node in range(1,n+1):
+    t = int(input())
+    for _ in range(t):
+        graph[node].append(tuple(map(int,input().split())))
+
+print(graph)
+
+distTo = [float('inf')]*(n+1)
+
+distTo[source] = 0
+min_heap = [(0,source)]
+heapq.heapify(min_heap)
+
+while min_heap:
+    dis,prev = heapq.heappop(min_heap)
+    for child in graph[prev]:
+        nxt,nxtdist = child
+        temp = distTo[prev]+nxtdist
+        if distTo[nxt] > temp:
+            distTo[nxt] = temp
+            heapq.heappush(min_heap,(temp,nxt))
+
+print(distTo)
+
+
+input:-
+2
+2 2
+4 1
+3
+1 2
+5 5
+3 4
+3
+2 4
+4 3
+5 1
+2
+1 1
+3 3
+2
+2 5
+3 1
+
+
+output:-
+
+
+defaultdict(<class 'list'>, {1: [(2, 2), (4, 1)], 2: [(1, 2), (5, 5), (3, 4)], 3: [(2, 4), (4, 3), (5, 1)], 4: [(1, 1), (3, 3)], 5: [(2, 5), (3, 1)]})
+relvent : - 
+
+[inf, 0, 2, 4, 1, 5]
+
+            
+
+
