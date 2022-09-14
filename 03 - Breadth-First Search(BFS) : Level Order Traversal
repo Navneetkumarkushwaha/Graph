@@ -1,0 +1,71 @@
+from typing import *
+from collections import defaultdict
+
+v , e = list(map(int,input().split())) # v = number of nodes and e = number of edges
+edges = []                             
+for _ in range(e):
+    temp = list(map(int,input().split()))
+    edges.append(temp)
+print(v)
+print(e)
+print(edges)
+    
+def prepare(adj,edges):
+    for i in range(len(edges)):
+        u = edges[i][0]
+        v = edges[i][1]
+        adj[u].append(v)  
+
+def bfs(node,visited,ans,adj):
+    q = [node]
+    visited[node] = 1
+    while q:
+        n = len(q)
+        for _ in range(n):
+            node = q.pop(0)
+            ans.append(node)
+            for child in adj[node]:
+                if visited[child] == 0:
+                    q.append(child)
+                    visited[child] = 1
+                    
+    
+def bfsOfGraph(v,e,edges):
+    visited = [0]*(v+1)               # visited array for identify which node is visited.
+    ans = []
+    adj = defaultdict(list)
+    prepare(adj,edges)
+    print(adj)
+    for node in range(v):
+        temp = []
+        if visited[node] == 0:
+            bfs(node,visited,temp,adj)
+            ans.append(temp)
+    for grp in ans:
+        print(grp)
+
+bfsOfGraph(v, e, edges)
+    
+Input : = 
+
+5 4
+0 1
+0 2
+0 3
+2 4
+
+Output: - 
+[[0, 1], [0, 2], [0, 3], [2, 4]]
+defaultdict(<class 'list'>, {0: [1, 2, 3], 2: [4]})
+[0, 1, 2, 3, 4]
+
+
+
+Time Complexity : O(N+E)
+
+N = Nodes , E = travelling through adjacent nodes
+
+Space Complexity : O(N+E) + O(N) + O(N) 
+
+Space for adjacency list, visited array, queue data structure
+
