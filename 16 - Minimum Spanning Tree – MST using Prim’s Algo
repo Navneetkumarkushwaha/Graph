@@ -1,0 +1,59 @@
+import heapq
+n = int(input())
+m = int(input())
+
+adj = [[]for _ in range(n)]
+
+for _ in range(m):
+    t = list(map(int,input().split()))
+    node = t.pop(0)
+    adj[node].append(t)
+
+parent = [-1]*(n)
+key = [float('inf')]*(n)
+mstset = [False]*(n)
+
+pq = []
+heapq.heapify(pq)
+key[0] = 0
+parent[0] = -1
+heapq.heappush(pq,(0,0))
+
+while pq:
+    
+    dis,u = heapq.heappop(pq)
+    mstset[u] = True
+
+    for it in adj[u]:
+        v = it[0]
+        wt = it[1]
+        if mstset[v] == False and wt < key[v]:
+            parent[v] = u
+            key[v] = wt
+            heapq.heappush(pq,(key[v],v))
+
+print(parent)
+    
+    
+input :-
+
+5
+12
+0 1 2
+0 3 6
+1 0 2
+1 2 3
+1 3 8
+1 4 5
+2 1 3
+2 4 7
+3 0 6
+3 1 8
+4 1 5
+4 2 7
+
+
+output:-
+
+[-1, 0, 1, 0, 1]
+
