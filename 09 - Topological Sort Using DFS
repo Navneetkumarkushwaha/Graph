@@ -1,0 +1,77 @@
+from typing import *
+from collections import defaultdict
+
+v , e = list(map(int,input().split())) # v = number of nodes and e = number of edges
+edges = []                             
+for _ in range(e):
+    temp = list(map(int,input().split()))
+    edges.append(temp)
+print(v)
+print(e)
+print(edges)
+    
+def prepare(adj,edges):
+    for i in range(len(edges)):
+        u = edges[i][0]
+        v = edges[i][1]
+        adj[u].append(v)
+    print(adj)
+
+def findtoposort(node,vis,st,adj):
+    vis[node] = 1
+    for child in adj[node]:
+        if not vis[child]:
+            findtoposort(child,vis,st,adj)
+    st.append(node)
+
+def toposort(v,edges):
+    st = []
+    vis = [0]*(v)
+    adj = defaultdict(list)
+    prepare(adj,edges)
+    for i in range(v):
+        if vis[i] == 0:
+            findtoposort(i,vis,st,adj)
+
+    topo = []
+
+    while st:
+        topo.append(st.pop())
+
+    print(topo)
+
+toposort(v,edges)
+          
+
+Input : = 
+6 6
+5 2
+5 0
+4 0
+4 1
+2 3
+3 1
+
+
+Output : = 
+[5, 4, 2, 3, 1, 0]
+
+
+Time Complexity: O(N+E) 
+
+N = Number of node , E = Number of Edges
+
+Space Complexity: O(N) + O(N)
+
+Visited Array and Stack data structure. Both will be using O(N).
+
+Auxiliary Space Complexity:  O(N)
+
+Recursion call of DFS
+
+
+
+
+
+
+
