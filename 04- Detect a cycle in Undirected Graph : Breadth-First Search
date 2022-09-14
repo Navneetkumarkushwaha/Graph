@@ -1,31 +1,71 @@
-graph = [[],[2],[1,4],[5],[2],[3,10,6],[5,7],[6,8],[7,9,11],[10,8],[5,9],[8]]
+from typing import *
+from collections import defaultdict
 
-visited = [0]*(12)
-def checkforcycle(node,graph,visited):
-    queue = []
+v , e = list(map(int,input().split())) # v = number of nodes and e = number of edges
+edges = []                             
+for _ in range(e):
+    temp = list(map(int,input().split()))
+    edges.append(temp)
+print(v)
+print(e)
+print(edges)
+    
+def prepare(adj,edges):
+    for i in range(len(edges)):
+        u = edges[i][0]
+        v = edges[i][1]
+        adj[u].append(v)  
+
+def findcycle(node,visited,adj):
+
+    q = [(node,-1)]
     visited[node] = 1
-    queue.append((node,-1))
 
-    while queue:
-        node,par = queue.pop()
-        for child in graph[node]:
-            if not visited[child]:
+    while q:
+        node,parent = q.pop(0)
+        for child in adj[node]:
+            if visited[child] == 0:
+                q.append((child,node))
                 visited[child] = 1
-                queue.append((child,node))
-            elif par != child:
+            elif child != parent:
                 return True
-
+    return False
     
-def iscycle(graph):
-    Flag = 'n'
-    for i in range(1,12):
-        if not visited[i]:
-            if checkforcycle(i,graph,visited):
-                print('Yes')
-                Flag = 'Cycle'
-        if Flag == 'Cycle':
+    
+def detect_a_cycle_in_UndirectedGraph(v,e,edges):
+    visited = [0]*(v+1)               # visited array for identify which node is visited.
+    ans = []
+    adj = defaultdict(list)
+    prepare(adj,edges)
+    print(adj)
+    for node in range(v):
+        if visited[node] == 0:
+            Flag = findcycle(node,visited,adj)
             break
-iscycle(graph)
-        
+    if Flag:
+        print("YES")
+    else:
+        print("No")
+
+detect_a_cycle_in_UndirectedGraph(v, e, edges)
     
-O/P = Yes
+Input : -
+5 5
+0 1
+0 2
+2 3
+1 3
+2 4
+
+
+Output:-
+5
+5
+[[0, 1], [0, 2], [2, 3], [1, 3], [2, 4]]
+defaultdict(<class 'list'>, {0: [1, 2], 2: [3, 4], 1: [3]})
+YES
+
+
+Time Complexity: O(N+E),  N is the time taken and E is for traveling through adjacent nodes overall. 
+
+Space Complexity: O(N+E) +  O(N) + O(N) , space for adjacent list , array and queue
