@@ -1,0 +1,73 @@
+n  = int(input())
+m = int(input())
+edges = []
+for _ in range(m):
+    edges.append(list(map(int,input().split())))
+
+edges.sort(key = lambda x:x[2])
+parent = [0]*(n)
+
+def findpar(u,parent):
+    if u == parent[u]:
+        return u
+    parent[u] = findpar(parent[u],parent)
+    return parent[u]
+
+def unionn(u,v,parent,rank):
+    u = findpar(u,parent)
+    v = findpar(v,parent)
+    if rank[u]<rank[v]:
+        parent[u] = v
+    elif rank[v] <rank[u]:
+        parent[v] = u
+    else:
+        parent[v] = u
+        rank[u] += 1
+
+for i in range(n):
+    parent[i] = i
+rank = [0]*(n)
+cost = 0
+mst = []
+
+for it in edges:
+    if findpar(it[1],parent) != findpar(it[0],parent):
+        cost += it[2]
+        mst.append((it[0],it[1]))
+        unionn(it[0],it[1],parent,rank)
+
+print(cost)
+for it in mst:
+    print(str(it[0])+'-'+str(it[1]))
+
+
+
+INPUT: - 
+5
+12
+0 1 2
+0 3 6
+1 0 2
+1 2 3
+1 3 8
+1 4 5
+2 1 3
+2 4 7
+3 0 6
+3 1 8
+4 1 5
+4 2 7
+
+
+
+
+Output:-
+16
+0-1
+1-2
+1-4
+0-3
+
+
+
+
