@@ -1,0 +1,74 @@
+from typing import *
+from collections import defaultdict
+
+v , e = list(map(int,input().split())) # v = number of nodes and e = number of edges
+edges = []                             
+for _ in range(e):
+    temp = list(map(int,input().split()))
+    edges.append(temp)
+print(v)
+print(e)
+print(edges)
+    
+def prepare(adj,edges):
+    for i in range(len(edges)):
+        u = edges[i][0]
+        v = edges[i][1]
+        adj[u].append(v)  
+
+def findcycle(node,vis,dfsvis,adj):
+    vis[node] = 1
+    dfsvis[node] = 1
+    for child in adj[node]:
+        if vis[child] == 0:
+            if findcycle(child,vis,dfsvis,adj):
+                return True
+        elif dfsvis[child]:
+            return True
+    dfsvis[child] = 1
+    return False
+
+    
+    
+def detect_a_cycle_in_directedGraph(v,e,edges):
+    vis = [0]*(v+1)               # visited array for identify which node is visited.
+    dfsvis = [0]*(v+1)
+    adj = defaultdict(list)
+    prepare(adj,edges)
+    print(adj)
+    for node in range(v):
+        if vis[node] == 0:
+            Flag = findcycle(node,vis,dfsvis,adj)
+            break
+    if Flag:
+        print("YES")
+    else:
+        print("No")
+
+detect_a_cycle_in_directedGraph(v, e, edges)
+    
+Input : =
+
+6 7
+0 1
+1 2
+1 5
+2 3
+3 4
+4 0
+4 1
+
+Output:=
+
+6
+7
+[[0, 1], [1, 2], [1, 5], [2, 3], [3, 4], [4, 0], [4, 1]]
+defaultdict(<class 'list'>, {0: [1], 1: [2, 5], 2: [3], 3: [4], 4: [0, 1]})
+YES
+
+
+Time Complexity: O(V + E), since in its whole, it is a DFS implementation, V – vertices; E – edges;
+
+Space Complexity: O(V), because, apart from the graph, we have 2 arrays of size V, to store the required information
+
+
